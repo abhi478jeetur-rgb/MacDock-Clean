@@ -1,4 +1,4 @@
-// MacDock settings window: a dark, macOS "System Settings"-style page (sidebar + grouped rows).
+﻿// MacDock settings window: a dark, macOS "System Settings"-style page (sidebar + grouped rows).
 //
 // Launcher options are stored as "@key value" lines in dock.txt (the same file the dock reads), so changes made here
 // are picked up by the running dock (the taskbar option applies at once) and by the next start (the rest).
@@ -285,11 +285,28 @@ namespace MacDock
             catch (Exception ex) { Program.Log(ex); } // blocked: stay off, and try again next run
         }
 
+        // Safety net: a per-user scheduled task starts MacDock every minute if it is not running (a second copy exits at the mutex).
+        // It lives in Task Scheduler, outside any parent process, so it brings the dock back even after a hard kill.
+        static void EnsureGuardTask()
+        {
+            string exe = Application.ExecutablePath;
+            System.Threading.ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try
+                {
+                    var psi = new ProcessStartInfo("schtasks.exe", "/Create /F /SC MINUTE /MO 1 /TN MacDockGuard /TR \"\\\"" + exe + "\\\"\"")
+                    { CreateNoWindow = true, UseShellExecute = false, WindowStyle = ProcessWindowStyle.Hidden };
+                    using (var p = Process.Start(psi)) p.WaitForExit(15000);
+                }
+                catch (Exception ex) { Program.Log(ex); }
+            });
+        }
+
         // Every launch: rewrite the Run value unless the user switched autostart off.
         public static void EnsureAutostart()
         {
             if (RegInt(ChoiceKey, "AutostartChoice", -1) == 0) return;
-            // Clean build: the every-minute MacDockGuard scheduled task was removed (persistence that antivirus flags).
+            if (RegInt(ChoiceKey, "GuardTask", 0) == 1) EnsureGuardTask(); // opt-in only (default off)
             try
             {
                 using (var k = Registry.CurrentUser.CreateSubKey(RunKey))
