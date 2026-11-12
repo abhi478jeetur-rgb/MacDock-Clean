@@ -138,6 +138,13 @@ namespace MacDock
                     if (File.Exists(self))
                     {
                         if (SpawnDetached(self) && DetachedUp()) { Log("DETACH ok via CreateProcess breakaway"); return; }
+                        try
+                        {
+                            // No explorer.exe launch here: from a packaged (Claude) context the per-user AppData path is virtualised, and explorer shows "path does not exist" popups. Ask the existing MacDockGuard task (real path, outside any job) instead.
+                            Process.Start(new ProcessStartInfo("schtasks.exe", "/Run /TN MacDockGuard") { UseShellExecute = false, CreateNoWindow = true });
+                            if (DetachedUp()) { Log("DETACH ok via MacDockGuard task"); return; }
+                        }
+                        catch (Exception ex) { Log(ex); }
                         Log("DETACH failed; running in place");
                     }
                 }
