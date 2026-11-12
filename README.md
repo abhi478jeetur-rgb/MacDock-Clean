@@ -1,7 +1,6 @@
 > **Clean build (personal fork of [gadgetcue/MacDock](https://github.com/gadgetcue/MacDock)).** All credit to the original author.
-> Changes in this fork: removed the self-updater (downloads and swaps the exe from the internet), removed the every-minute
-> `MacDockGuard` scheduled task, removed Google favicon lookups (website icons now come only from the site itself),
-> removed hard-coded developer debug-log paths, and removed large reference media. No telemetry or trackers existed in the original.
+> Changes in this fork: removed the self-updater (it downloaded and swapped the exe from the internet), removed hard-coded
+> developer debug-log paths, and removed large reference media. Everything else works as in the original.
 > **Install:** download this repo as ZIP, unzip, run `Install.bat` - it compiles `MacDock.exe` locally from source with the
 > C# compiler built into Windows (no prebuilt exe to trust). Remove with `Uninstall.bat`.
 
