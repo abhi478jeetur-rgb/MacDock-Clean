@@ -1,8 +1,9 @@
 > **Clean build (personal fork of [gadgetcue/MacDock](https://github.com/gadgetcue/MacDock)).** All credit to the original author.
 > Changes in this fork: removed the self-updater (it downloaded and swapped the exe from the internet), removed hard-coded
 > developer debug-log paths, and removed large reference media. Everything else works as in the original.
-> **Install:** download this repo as ZIP, unzip, run `Install.bat` - it compiles `MacDock.exe` locally from source with the
-> C# compiler built into Windows (no prebuilt exe to trust). Remove with `Uninstall.bat`.
+> **Install:** click Code > Download ZIP, unzip, run `Install.bat`. A prebuilt `bin\MacDock.exe` (v1.9-clean, built from this source)
+> is included, SHA256 `363888e978c30758ce1d8ef02607117b4c8339eb82d936951ef36e213621102c`. To build it yourself instead, delete `bin\`
+> and `Install.bat` compiles it with the C# compiler built into Windows. Remove with `Uninstall.bat`.
 
 ﻿# MacDock
 
