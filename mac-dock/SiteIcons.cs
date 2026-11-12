@@ -87,6 +87,7 @@ namespace MacDock
             }
             urls.Add(root + "/apple-touch-icon.png");
             urls.Add(root + "/favicon.ico");
+            urls.Add("https://www.google.com/s2/favicons?sz=256&domain=" + Uri.EscapeDataString(page.Host));
 
             Bitmap best = null;
             int tried = 0;
